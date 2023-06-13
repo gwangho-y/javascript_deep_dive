@@ -27,4 +27,13 @@ console.log(person) // { firstName: 'gwangho', lastName: 'yi', fullName: [Getter
 // firstName은 데이터 프로퍼티다
 
 let descriptor = Object.getOwnPropertyDescriptor(person, 'firstName')
+/*
+    {
+        value: 'gwangho',
+        writable: true,
+        enumerable: true,
+        configurable: true
+    }
+*/
 console.log(descriptor)
+
