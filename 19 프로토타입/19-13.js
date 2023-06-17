@@ -5,7 +5,7 @@ function Person(name) {
 
 const me = new Person('Lee')
 
-console.log(Person.prototype === me.__proto__)
+console.log(Person.prototype === me.__proto__) // true
 
 
 function Parent(name) {
