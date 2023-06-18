@@ -104,3 +104,6 @@ proto 키워드를 사용해서 자신의 프로토타입을 참조, 수정할 �
     const me = new Person('Lee')
 
     console.log(Person.prototype === me.__proto__) // true
+
+
+## 프로토타입 체인
