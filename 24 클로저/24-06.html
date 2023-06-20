@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+
+<body>
+    <script>
+        function foo() {
+            const x = 1
+            const y = 2
+
+            function bar() { // bar는 상위 스코프의 식별자(변수 등)을 참조하고 있지 않기 때문에 클로져가 될 수 없다
+                const z = 3
+
+                debugger
+
+                console.log(z)
+            }
+
+            return bar;
+        }
+
+        const bar = foo()
+        bar()
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        function foo() {
+            const x = 1
+            const y = 1 // y는 참조되고 있지 않기 때문에 살아남지 않는다
+
+            function bar() {
+
+                debugger
+            // bar는 상위 스코프의 식별자 x를 참조하고 있기 때문에 Closure에는 foo 함수의 x 가 담겨있다. 브라우저에서 확인 가능
+                console.log(x)
+            }
+
+            return bar;
+        }
+
+        const bar = foo()
+        // 외부 함수인 foo 보다 중첩함수인 bar가 더 오래 살아남아있기 때문에 bar는 클로져다
+        bar()
+    </script>
+</body>
+</html>
