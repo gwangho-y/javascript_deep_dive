@@ -15,7 +15,6 @@ me.sayHi() // Hi! My name is Lee. I am 20.
 
 const you  = new Person( 'kim', 30)
 
-
 you.sayHi() // Hi! My name is kim. I am 30.
 
 
