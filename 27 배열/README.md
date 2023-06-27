@@ -51,6 +51,7 @@
 
 ### sort
 배열의 요소를 정렬한다. 원본배열을 직접 변경한다. 기본적으로 오름차순으로 정렬한다.
+sort의 알고리즘은 quicksort 알고리즘에서 timsort 알고리즘으로 변경되었다.
 
     const fruits = ['Banana', 'Orange', 'Apple'];
     fruits.sort()
@@ -61,4 +62,93 @@
     numbers.sort()
     console.log(numbers) // [ 1, 2, 3, 4, 5 ]
 
-문제는 
+
+특이한 점은 sort는 모든 요소를 문자열로 변환 한 후 유니코드 포인트의 순서를 기준으로 정렬한다.<br/>
+문제는 문자 10의 경우 유니코드 포인트가 숫자 2보다 앞서기 때문에 10이 2보다 앞선다는데 있다.
+
+
+    console.log([2,10].sort()) // [ 10, 2 ]
+    console.log(["2","10"].sort()) // [ '10', '2' ]  
+
+따라서 정렬 순서를 정의하는 비교 함수를 인수로 전달해야한다.
+
+
+    const points = [40, 100, 1, 5, 2, 25, 10]
+    points.sort((a,b) => a - b)
+    console.log(points) // [ 1, 2, 5, 10, 25, 40, 100 ]
+    
+    
+    points.sort((a,b) => b - a)
+    console.log(points) // [100, 40, 25, 10, 5, 2, 1]
+
+
+
+### foreach
+for문 대체 가능한 고차함수다.
+map과는 다르게 반환값은 undefined다.
+foreach 메서드의 콜백함수는 foreach 메서드를 호출한 배열의 요소값, 인덱스, 호출한 배열(this)를 순차적으로 전달받는다.
+
+    [1, 2, 3].forEach((item, index, arr)=> {
+        console.log(`요소값 : ${item}, 인덱스: ${index}, this${JSON.stringify(arr)}`)
+    })
+    // 요소값 : 1, 인덱스: 0, this : [1,2,3]
+    // 요소값 : 2, 인덱스: 1, this : [1,2,3]
+    // 요소값 : 3, 인덱스: 2, this : [1,2,3]
+
+
+
+만약 콜백함수에서 this를 사용하고 싶다면 foreach의 인자로 this를 넣어주거나 화살표 함수를 사용한다.
+
+
+    // 콜백 함수에 this를 전달 하고 싶다면 인수로 전달해주면된다.
+    class Numbers {
+    numberArray = []
+    
+        // multiply(arr) {
+        //     arr.forEach(function (item) {
+        //         this.numberArray.push(item * item)
+        //     }, this)
+        // }
+    
+        multiply(arr) {
+            arr.forEach((item) => {
+                this.numberArray.push(item * item)
+            })
+        }
+    }
+    
+    const numbers = new Numbers()
+    numbers.multiply([1,2,3])
+    console.log(numbers.numberArray)// [ 1, 4, 9 ]
+
+
+일반 함수의 this에는 전역객체가 바인딩된다. 하지만 class는 암묵적으로 strict mode가 적용되고 엄격모드에서 일반함수의 this에는
+undefined가 바인딩 되기 때문에 this는 사용하지 못 한다.<br/>
+그렇기 때문에 foreach의 내부를 보면 this를 인자 값으로도 받을 수 있게 작성되어 있다.
+
+    forEach(callbackfn: (value: T, index: number, array: readonly T[]) => void, thisArg?: any): void;
+
+
+희소 배열의 경우 값이 없으면 대상에서 제외된다.
+
+
+### map
+foreach처럼 배열의 모든 요소를 순회하며 전달 받은 콜백 함수를 반복 호출한다.<br/>
+foreach와 다르게 콜백 함수의 반환 값들로 구성된 **새로운 배열을 반환**한다. 원본 배열은 변경되지 않는다.
+
+map이 생성하여 반환하는 새로운 배열의 length 값은 처음에 map을 호출한 배열의 length 값과 반드시 일치한다.<br>
+즉, **map을 호출한 배열과, map이 생성한 배열은 1:1 매핑**한다.
+
+    [1, 2, 3].map((item, index, arr)=> {
+        console.log(`요소값 : ${item}, 인덱스: ${index}, this : ${JSON.stringify(arr)}`)
+        // 요소를 return 시켜줘야한다.
+        return item
+    })
+
+
+### filter
+콜백 함수의 반환 값이 true인 요소로만 구성된 새로운 배열을 반환한다.
+원본 배열은 변경되지 않는다. 
+
+filter 메서드가 생성하여 반환한 배열의 length는 원본 배열의 length보다 같거나 작다.
+왜냐하면 true인 요소들만 뽑아서 반환하기 때문이다.
