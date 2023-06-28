@@ -152,3 +152,35 @@ map이 생성하여 반환하는 새로운 배열의 length 값은 처음에 map
 
 filter 메서드가 생성하여 반환한 배열의 length는 원본 배열의 length보다 같거나 작다.
 왜냐하면 true인 요소들만 뽑아서 반환하기 때문이다.
+
+### reduce
+모든 요소를 순회하며 콜백함수를 반복 호출한다.
+콜백함수에서 return한 값을 다음 순회할 콜백함수의 첫번째 인자로넘기는 것을 반복,누산 시켜서 하나의 결과값을 만든다.
+
+    reduce((accmulator, currentValue, index, array)=> {}, 초기값: 0, '', {}, [])
+
+초기값에 따라 만들어지는 결과물이 달라질 수도 있으므로 최종적 결과로 돌려받을 타입을 초기값으로 넣어주는게 좋다.
+
+
+
+    // 1부터 4까지 값 누적
+    const sum = [1,2,3,4].reduce((acc, curr, idx, arr)=> acc + curr, 0)
+    console.log(sum) // 10
+    
+    // 평균 구하기
+    const values = [1,2,3,4,5,6]
+    const average = values.reduce((acc, curr, i, { length }) => {
+        return i === length - 1 ? (acc + curr) / length : acc+curr
+    }, 0)
+    
+    console.log(average) // 3.5
+    
+    
+    // 요소의 중복 횟수 구하기
+    const fruits = ['banana', 'apple', 'orange', 'orange', 'apple']
+    const count = fruits.reduce((acc, cur) => {
+        acc[cur] = (acc[cur] || 0) + 1
+        return acc
+    }, {})
+    
+    console.log(count) // { banana: 1, apple: 2, orange: 2 }
