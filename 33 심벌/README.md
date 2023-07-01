@@ -48,3 +48,42 @@
     // Symbol 함수로 생성 시 전역 심벌 레지스트리에 등록 되지 않기 때문에 keyFor로 검색 불가능하다
     const s3 = Symbol('foo')
     Symbol.keyFor(s3) // undefined
+
+
+
+## Well-known Symbol
+자바스크립트가 제공하는 빌트인 심벌을 Well-known Symbol이라고 하며 내부 알고리즘에 사용된다.
+배열과 map 같은 for문으로 순회 가능한 것들은 [Symbol.iterator] 라는 메서드를 가지고 있다.
+Symbol.iterator 를 호출하면 for문 같은 반복문으로 요소 순회가 가능하게 된다.<br>
+Symbol.iterator 이외에도 Symbol.replace, Symbol.toStringTag 같은 여러 Well-known Symbol 들이 있다.
+
+
+
+Symbol.iterator을 사용해서 객체를 만들면 배열처럼 순회 가능한 객체가 된다.
+
+
+
+
+
+    // array나 map , set 등은 for of로 순회 가능한 객체를 만든다.
+    const iterable = {
+    // Symbol.iterator 메서드를 구현하면 이터러블 프로토콜을 준수하게 된다.
+    [Symbol.iterator]() {
+    let cur = 1
+    const max = 5
+    
+            // 여기의 return객체를 이터레이터라고 하고
+            // 이터레이터는 next라는 메서드를 소유해야한다
+            // 다음 요소를 가져온다. 
+            return {
+                next() {
+                    return { value: cur++, done: cur > max + 1}
+                }
+            }
+    
+        }
+    }
+    
+    for (const i of iterable) {
+    console.log(i)
+    }
